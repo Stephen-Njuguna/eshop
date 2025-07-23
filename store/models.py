@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.text import slugify
+
+
 # Create your models here.
 
 #Creating of vendors model
@@ -21,7 +24,7 @@ class Product(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     price = models.DecimalField(max_digits=10,decimal_places=2)
-    image = models.ImageField(upload_to='products_images/', blank=False)
+    image = models.ImageField(upload_to='products_images/', blank=True)
     added_at = models.DateField(auto_now_add=True)
 
     def __str__(self):
@@ -39,7 +42,12 @@ class Store(models.Model):
     def __str__(self):
         return self.vendor.store_name
     
-    @classmethod
-    def get_products(cls):
-        name = Vendor.user
-        return cls.objects.filter(vendor = name)
+    from django.utils.text import slugify
+
+def save(self, *args, **kwargs):
+    if not self.slug:
+        self.slug = slugify(self.vendor.store_name)
+    super().save(*args, **kwargs)
+
+    def get_products(self):
+        return Product.objects.filter(vendor = self.vendor)

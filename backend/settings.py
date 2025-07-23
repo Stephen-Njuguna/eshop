@@ -40,8 +40,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'store.apps.StoreConfig',
-    'resr_framework',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders'
 ]
+
+#Enable Token Auth in DRF
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -138,3 +148,9 @@ DATABASES = {
         'PORT': '5432',  # default port
     }
 }
+
+#This allows React app (on port 3000) to talk to Django APIs securely.
+MIDDLEWARE = ['corsheaders.middleware.CorsMiddleware'] + MIDDLEWARE
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
